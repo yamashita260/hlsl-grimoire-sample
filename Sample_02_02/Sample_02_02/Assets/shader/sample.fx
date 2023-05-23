@@ -26,8 +26,7 @@ VSOutput VSMain(VSInput In)
 // ピクセルシェーダー
 float4 PSMain(VSOutput vsOut) : SV_Target0
 {
-    // 赤色を出力している
-    return float4(1.0f, 0.0f , 0.0f, 1.0f);
+    return float4(1.0f, 1.0f , 0.0f, 1.0f);
 
     // step-1 三角形を青色にする
 
