@@ -89,6 +89,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     triangleIB.Init(sizeof(indices), 2);
     triangleIB.Copy(indices);
 
+    //wipe
+    float wipeSize = 0;
+    //Sprite test2D;
+    //test2D.Init(rootSignature);
+
+
     //////////////////////////////////////
     // 初期化を行うコードを書くのはここまで！！！
     //////////////////////////////////////
@@ -116,6 +122,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         renderContext.SetIndexBuffer(triangleIB);
         // 6. ドローコール
         renderContext.DrawIndexed(_countof(indices));
+
+        //2-1～2
+        wipeSize += 0.5f;
+        //test2D.Draw(renderContext);
 
         /// //////////////////////////////////////
         // 絵を描くコードを書くのはここまで！！！

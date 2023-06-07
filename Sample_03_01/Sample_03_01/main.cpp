@@ -26,6 +26,14 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     triangle.Init(rootSignature);
 
     // step-1 定数バッファを作成
+    ConstantBuffer cb;
+    cb.Init(sizeof(Matrix));
+
+    DescriptorHeap ds;
+    ds.RegistConstantBuffer(0, cb);
+    ds.Commit();
+
+    float moveX = -1.0f;
 
     // step-2 ディスクリプタヒープを作成
 
@@ -48,10 +56,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         renderContext.SetRootSignature(rootSignature);
 
         // step-3 ワールド行列を作成
+        Matrix mWorld;
+        moveX += 0.01f;
+        mWorld.MakeTranslation(moveX, 0.0f, 0.0f);
 
         // step-4 ワールド行列をグラフィックメモリにコピー
+        cb.CopyToVRAM(mWorld);
 
         // step-5 ディスクリプタヒープを設定
+        renderContext.SetDescriptorHeap(ds);
 
         //三角形をドロー
         triangle.Draw(renderContext);

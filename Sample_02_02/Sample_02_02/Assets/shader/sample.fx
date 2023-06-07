@@ -28,12 +28,12 @@ float4 PSMain(VSOutput vsOut) : SV_Target0
 {
     return float4(1.0f, 1.0f , 0.0f, 1.0f);
 
-    // step-1 三角形を青色にする
-
-    // step-2 三角形を緑色にする
-
-    // step-3 三角形を黄色にする
-
-    // step-4 頂点シェーダーから受け取ったカラーを出力する
-
+    //2
+    clip(In.pos.x - wipeSize)
 }
+
+//2
+cbuffer WipeC8 : register(b1);
+{
+    float wipeSize;
+};
