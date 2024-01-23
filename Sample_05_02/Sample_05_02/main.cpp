@@ -23,6 +23,13 @@ struct Light
     Vector3 eyePos;         // 視点の位置
     float pad4;
 
+    Vector3 spPosition; //位置
+    float pad3; //パディング
+    Vector3 spColor; //カラー
+    float spRange; //影響範囲
+    Vector3 spDirection; //射出方向
+    float spAngle; //射出角度
+
     Vector3 ambientLight;   // アンビエントライト
 };
 //////////////////////////////////////
@@ -64,6 +71,25 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     Model lightModel, bgModel, teapotModel;
     InitModel(bgModel, teapotModel, lightModel , light);
 
+    light.spPosition.x = 0.0f;
+    light.spPosition.y = 50.0f;
+    light.spPosition.z = 0.0f;
+
+    light.spColor.x = 10.0f;
+    light.spColor.y = 10.0f;
+    light.spColor.z = 10.0f;
+
+    light.spDirection.x = 1.0f;
+    light.spDirection.y = -1.0f;
+    light.spDirection.z = -1.0f;
+
+    light.spDirection.Normalize();
+
+    light.spRange = 300.0f;
+
+    light.spAngle = Math::DegToRad(25.0f);
+
+
     //////////////////////////////////////
     // 初期化を行うコードを書くのはここまで！！！
     //////////////////////////////////////
@@ -79,8 +105,33 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         //////////////////////////////////////
 
         // step-3 コントローラー左スティックでスポットライトを移動させる
+        light.spPosition.x -= g_pad[0]->GetLStickXF();
+        if (g_pad[0]->IsPress(enButtonB))
+        {
+            light.spPosition.y += g_pad[0]->GetLStickYF();
+        }
+        else
+        {
+            light.spPosition.z += g_pad[0]->GetLStickYF();
+        }
 
         // step-4 コントローラー右スティックでスポットライトを回転させる
+        Quaternion qRotY;
+        qRotY.SetRotationY(g_pad[0]->GetLStickXF() * 0.01f);
+
+        qRotY.Apply(light.spDirection);
+
+        Vector3 rotAxis;
+        rotAxis.Cross(g_vec3AxisY, light.spDirection);
+        Quaternion qRotX;
+        qRotX.SetRotation(rotAxis, g_pad[0]->GetLStickYF() * 0.01f);
+
+        qRotX.Apply(light.spDirection);
+
+        Quaternion qRot;
+        qRot.SetRotation({ 0.0f,0.0f,-1.0f }, light.spDirection);
+
+        lightModel.UpdateWorldMatrix(light.spPosition, qRot, g_vec3One);
 		
         // 背景モデルをドロー
         bgModel.Draw(renderContext);
