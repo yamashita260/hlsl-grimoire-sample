@@ -111,7 +111,7 @@ float4 PSMain(SPSIn psIn) : SV_Target0
     ligDir = normalize(ligDir);
 
     // step-7 減衰なしのLambert拡散反射光を計算する
-    float3 diffSpotLight = CalcLamberDiffuse(
+    float3 diffSpotLight = CalcLambertDiffuse(
         ligDir,
         spColor,
         psIn.normal
@@ -121,7 +121,7 @@ float4 PSMain(SPSIn psIn) : SV_Target0
     float3 specSpotLight = CalcPhongSpecular(
         ligDir,
         spColor,
-        psIn.woeldPos,
+        psIn.worldPos,
         psIn.normal
     );
     // step-9 距離による影響率を計算する
